@@ -8,7 +8,11 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'https://dambit-client.vercel.app',
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://dambit-client.vercel.app'
+        : 'http://localhost:5100',
+
     credentials: true,
   }); // 프론트엔드에서 호출하려면 CORS 허용
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
